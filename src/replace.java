@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class replace {
+public class Replace {
     Notepad notepad = new Notepad();
     public void replace() {
         final JDialog findDialog = new JDialog(new JFrame(), "替换", true);

@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class turnTo {
+public class TurnTo {
     Notepad notepad= new Notepad();
     public void turnTo() {
         final JDialog gotoDialog = new JDialog(new JFrame(), "转到下列行");

@@ -23,7 +23,7 @@ public class Notepad extends JFrame {
     JLabel statusLabel1, statusLabel2;
     PrintJob p = null;
     Graphics g = null;// 要打印的对象
-
+    String currentPath = null;
     private File currentFile;
     private boolean isNewFile;
 
@@ -80,19 +80,19 @@ public class Notepad extends JFrame {
         this.setIconImage(img);
         this.setTitle("Notepad");
 
-    } // Jframe
+    } // frame
 
     private void Menu1() {
         JMenu jm1 = new JMenu("文件(F)");// 下拉菜单“文件”
-        JMenuItem newfile = new  JMenuItem("新建");
+        JMenuItem NewFile = new JMenuItem("新建(N)");
         JMenuItem jmt1_1 = new JMenuItem("打开(O)");
         JMenuItem jmt1_2 = new JMenuItem("保存(S)");
         JMenuItem jmt1_3 = new JMenuItem("退出(X)");
-        JMenuItem jmsetting = new JMenuItem("页面设置(U)");
-        final JMenuItem fileSaveAs = new JMenuItem("另存为(A)...");
-        JMenuItem jmprint = new JMenuItem("打印(P)");
+        JMenuItem setting = new JMenuItem("页面设置(U)");
+        JMenuItem fileSaveAs = new JMenuItem("另存为(A)...");
+        JMenuItem print = new JMenuItem("打印(P)");
 
-        jm1.add(newfile);
+        jm1.add(NewFile);
         jm1.addSeparator();
         jm1.add(jmt1_1);
         jm1.addSeparator();
@@ -100,31 +100,23 @@ public class Notepad extends JFrame {
         jm1.addSeparator();
         jm1.add(fileSaveAs);
         jm1.addSeparator();
-        jm1.add(jmsetting);
+        jm1.add(setting);
         jm1.addSeparator();
-        jm1.add(jmprint);
+        jm1.add(print);
         jm1.addSeparator();
         jm1.add(jmt1_3);
         jm1.setIcon(new ImageIcon("image/file.jpg"));
-
         jmb.add(jm1);
-
         jm1.setMnemonic('F');// Alt+F
         /*
          * 添加事件
          */
-        Jmt1_1Event(jmt1_1); // 打开
-
-        Jmt1_2Event(jmt1_2); // 保存
-
-        Jmt3_3Event(jmt1_3); // 退出
-        jmt1_3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-
-        PageSetting(jmsetting);// 页面设置
-        jmsetting.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
-
-        打印(jmprint);//打印
-
+        打开(jmt1_1); // 打开
+        保存(jmt1_2); // 保存
+        退出(jmt1_3); // 退出
+        新建(NewFile);
+        页面设置(setting);// 页面设置
+        打印(print);//打印
         另存为(fileSaveAs);
 
     }
@@ -158,7 +150,7 @@ public class Notepad extends JFrame {
         jm2.add(editGoTo);
         jm2.addSeparator();
         jm2.add(editDate);
-        jm2.setIcon( (new ImageIcon("image/edit.jpg")));
+        jm2.setIcon((new ImageIcon("image/edit.jpg")));
         jmb.add(jm2);
         jm2.setMnemonic('E');// Alt+E
         // 复制
@@ -292,7 +284,7 @@ public class Notepad extends JFrame {
     /**
      * @param jmt1_1
      */
-    private void Jmt1_1Event(JMenuItem jmt1_1) {
+    private void 打开(JMenuItem jmt1_1) {
         jmt1_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -320,7 +312,7 @@ public class Notepad extends JFrame {
         jmt1_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
     }
 
-    private void Jmt1_2Event(JMenuItem jmt1_2) {
+    private void 保存(JMenuItem jmt1_2) {
         jmt1_2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -331,8 +323,26 @@ public class Notepad extends JFrame {
         jmt1_2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     }
 
-    private void 打印(JMenuItem jmprint) {
-        jmprint.addActionListener(new ActionListener() {
+    private void 新建(JMenuItem NewFile) {
+        NewFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (textArea.getText().equals("")) {
+                    textArea.setText("");
+                } else {
+                    int result = JOptionPane.showConfirmDialog(Notepad.this, "是否将更改保存到无标题？", "记事本",
+                            JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (result == 0) {
+                        保存文件();
+                    }
+                }
+            }
+        });
+        NewFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+    }
+
+    private void 打印(JMenuItem print) {
+        print.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -348,26 +358,28 @@ public class Notepad extends JFrame {
             }
 
         });// 打印
-        jmprint.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+        print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
     }
 
-    private void Jmt3_3Event(JMenuItem jmt1_3) {
+    private void 退出(JMenuItem jmt1_3) {
         jmt1_3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
+        jmt1_3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
     }
 
-    private void PageSetting(JMenuItem jmsetting) {
-        jmsetting.addActionListener(new ActionListener() {
+    private void 页面设置(JMenuItem setting) {
+        setting.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PageFormat pf = new PageFormat();
                 PrinterJob.getPrinterJob().pageDialog(pf);
             }
         });
+        setting.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK));
     }
 
     private void 保存文件() {
@@ -465,7 +477,7 @@ public class Notepad extends JFrame {
         jmt2_4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new find().find();
+                new Find().find();
             }
         });
         jmt2_4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
@@ -508,7 +520,7 @@ public class Notepad extends JFrame {
         jmt2_6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new replace().replace();
+                new Replace().replace();
             }
         });
         jmt2_6.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
@@ -518,8 +530,8 @@ public class Notepad extends JFrame {
         editGoTo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                turnTo turnTo = new turnTo();
-                turnTo.turnTo();
+                TurnTo TurnTo = new TurnTo();
+                TurnTo.turnTo();
             }
         });
         editGoTo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
@@ -608,7 +620,7 @@ public class Notepad extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showConfirmDialog(panel, "Notepad", "关于", JOptionPane.DEFAULT_OPTION);
+                JOptionPane.showConfirmDialog(panel, "", "关于", JOptionPane.DEFAULT_OPTION, 0, new ImageIcon("image/hj.jpg"));
             }
         });
         jmt5_2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_DOWN_MASK));
@@ -640,8 +652,8 @@ public class Notepad extends JFrame {
             }
         });
 
-        Jmt1_1Event(menuOpen);
-        Jmt1_2Event(menuItemSave);
+        打开(menuOpen);
+        保存(menuItemSave);
         复制(menuItemCopy);
         剪切(menuItemCut);
         粘贴(menuItemPaste);
@@ -701,9 +713,5 @@ public class Notepad extends JFrame {
         System.out.println("Close");
     }
 
-    public static void main(String args[]) {
-        new Notepad().setVisible(true);
-
-    }
 
 }
