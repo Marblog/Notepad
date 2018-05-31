@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 public class TurnTo {
     Notepad notepad= new Notepad();
-    public void turnTo() {
+    public void TurnTo() {
         final JDialog gotoDialog = new JDialog(new JFrame(), "转到下列行");
         JLabel gotoLabel = new JLabel("行数(L):");
         final JTextField linenum = new JTextField(5);
