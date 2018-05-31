@@ -620,7 +620,11 @@ public class Notepad extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
                 JOptionPane.showConfirmDialog(panel, "", "关于", JOptionPane.DEFAULT_OPTION, 0, new ImageIcon("image/hj.jpg"));
+=======
+                JOptionPane.showConfirmDialog(panel, "", "关于", JOptionPane.DEFAULT_OPTION,0,new ImageIcon("image/hj.jpg"));
+>>>>>>> 70af111062b672bd1b6b4ae0d00394c37cb19800
             }
         });
         jmt5_2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_DOWN_MASK));
@@ -713,5 +717,18 @@ public class Notepad extends JFrame {
         System.out.println("Close");
     }
 
+<<<<<<< HEAD
+=======
+    public static void main(String args[]) {
+        SplashWindow splashWindow = new SplashWindow("Hello",new JFrame(),5000);
+        splashWindow.star();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        new Notepad().setVisible(true);
+    }
+>>>>>>> 70af111062b672bd1b6b4ae0d00394c37cb19800
 
 }

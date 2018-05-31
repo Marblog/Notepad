@@ -37,7 +37,11 @@ public class SplashWindow extends JWindow {
         // 增加一个鼠标事件处理器，如果用户用鼠标点击了欢迎屏幕，则关闭。
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
+<<<<<<< HEAD
                 JOptionPane.showConfirmDialog(SplashWindow.this, "加载中,请稍等...", "Load...", JOptionPane.DEFAULT_OPTION);
+=======
+                JOptionPane.showConfirmDialog(SplashWindow.this,"加载中,请稍等...","Load...",JOptionPane.DEFAULT_OPTION);
+>>>>>>> 70af111062b672bd1b6b4ae0d00394c37cb19800
                 setVisible(true);
             }
         });
