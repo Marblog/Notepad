@@ -21,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -30,17 +28,17 @@ import javax.swing.text.PlainDocument;
 /**
  * 字体选择器，仿记事本中的字体控件，使用操作方法与文件选择器JFileChooser基本相同。
  *
+ * @author Administrator
  */
-@SuppressWarnings("serial")
 public class MyFont extends JDialog {
     /**
      * 选择取消按钮的返回值
      */
-    public static final int CANCEL_OPTION = 0;
+    private static final int CANCEL_OPTION = 0;
     /**
      * 选择确定按钮的返回值
      */
-    public static final int APPROVE_OPTION = 1;
+    static final int APPROVE_OPTION = 1;
     /**
      * 中文预览的字符串
      */
@@ -53,10 +51,7 @@ public class MyFont extends JDialog {
      * 数字预览的字符串
      */
     private static final String NUMBER_STRING = "0123456789";
-    // 预设字体，也是将来要返回的字体
-    private Font font = null;
-    // 字体选择器组件容器
-    private Box box = null;
+    private Font font;
     // 字体文本框
     private JTextField fontText = null;
     // 样式文本框
@@ -72,17 +67,15 @@ public class MyFont extends JDialog {
     // 数字预览
     private JRadioButton numberButton = null;
     // 字体选择框
-    private JList fontList = null;
+    private JList<String> fontList = null;
     // 样式选择器
-    private JList styleList = null;
+    private JList<String> styleList = null;
     // 文字大小选择器
-    private JList sizeList = null;
+    private JList<String> sizeList = null;
     // 确定按钮
     private JButton approveButton = null;
     // 取消按钮
     private JButton cancelButton = null;
-    // 所有字体
-    private String [] fontArray = null;
     // 所有样式
     private String [] styleArray = {"常规", "粗体", "斜体", "粗斜体"};
     // 所有预设字体大小
@@ -122,9 +115,11 @@ public class MyFont extends JDialog {
     private void init(){
         // 获得系统字体
         GraphicsEnvironment eq = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        fontArray = eq.getAvailableFontFamilyNames();
+        // 所有字体
+        String[] fontArray = eq.getAvailableFontFamilyNames();
         // 主容器
-        box = Box.createVerticalBox();
+        // 字体选择器组件容器
+        Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         fontText = new JTextField();
         fontText.setEditable(false);
@@ -135,6 +130,7 @@ public class MyFont extends JDialog {
         sizeText = new JTextField("12");
         // 给文字大小文本框使用的Document文档，制定了一些输入字符的规则
         Document doc = new PlainDocument(){
+            @Override
             public void insertString(int offs, String str, AttributeSet a)
                     throws BadLocationException {
                 if (str == null) {
@@ -162,9 +158,9 @@ public class MyFont extends JDialog {
         bg.add(chinaButton);
         bg.add(englishButton);
         bg.add(numberButton);
-        fontList = new JList(fontArray);
-        styleList = new JList(styleArray);
-        sizeList = new JList(sizeArray);
+        fontList = new JList<>(fontArray);
+        styleList = new JList<>(styleArray);
+        sizeList = new JList<>(sizeArray);
         approveButton = new JButton("确定");
         cancelButton = new JButton("取消");
         Box box1 = Box.createHorizontalBox();
@@ -285,41 +281,37 @@ public class MyFont extends JDialog {
      */
     private void addListener() {
         sizeText.addFocusListener(new FocusListener() {
+            @Override
             public void focusLost(FocusEvent e) {
                 setPreview();
             }
+            @Override
             public void focusGained(FocusEvent e) {
                 sizeText.selectAll();
             }
         });
         // 字体列表发生选择事件的监听器
-        fontList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    fontText.setText(String.valueOf(fontList.getSelectedValue()));
-                    // 设置预览
-                    setPreview();
-                }
+        fontList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                fontText.setText(String.valueOf(fontList.getSelectedValue()));
+                // 设置预览
+                setPreview();
             }
         });
-        styleList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    styleText.setText(String.valueOf(styleList.getSelectedValue()));
-                    // 设置预览
-                    setPreview();
-                }
+        styleList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                styleText.setText(String.valueOf(styleList.getSelectedValue()));
+                // 设置预览
+                setPreview();
             }
         });
-        sizeList.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    if(!sizeText.isFocusOwner()){
-                        sizeText.setText(String.valueOf(sizeList.getSelectedValue()));
-                    }
-                    // 设置预览
-                    setPreview();
+        sizeList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                if(!sizeText.isFocusOwner()){
+                    sizeText.setText(String.valueOf(sizeList.getSelectedValue()));
                 }
+                // 设置预览
+                setPreview();
             }
         });
         // 编码监听器
@@ -328,22 +320,16 @@ public class MyFont extends JDialog {
         englishButton.addActionListener(ea);
         numberButton.addActionListener(ea);
         // 确定按钮的事件监听
-        approveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // 组合字体
-                font = groupFont();
-                // 设置返回值
-                returnValue = APPROVE_OPTION;
-                // 关闭窗口
-                disposeDialog();
-            }
+        approveButton.addActionListener(e -> {
+            // 组合字体
+            font = groupFont();
+            // 设置返回值
+            returnValue = APPROVE_OPTION;
+            // 关闭窗口
+            disposeDialog();
         });
         // 取消按钮事件监听
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                disposeDialog();
-            }
-        });
+        cancelButton.addActionListener(e -> disposeDialog());
     }
     /**
      * 显示字体选择器
@@ -426,6 +412,7 @@ public class MyFont extends JDialog {
      *
      */
     class EncodeAction implements ActionListener {
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(chinaButton)) {
                 previewText.setText(CHINA_STRING);

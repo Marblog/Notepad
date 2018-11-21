@@ -13,23 +13,27 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 
+import static java.awt.event.InputEvent.CTRL_MASK;
+
+/**
+ * @author Administrator
+ */
 @SuppressWarnings("serial")
 public class Notepad extends JFrame {
 
     private JMenu jMenu;
-    JMenuBar jmb = new JMenuBar();
+    private JMenuBar jmb = new JMenuBar();
     JTextArea textArea = new JTextArea(20, 50);
-    JPanel panel = new JPanel();
-    JLabel statusLabel1, statusLabel2;
-    PrintJob p = null;
-    Graphics g = null;// 要打印的对象
-    String currentPath = null;
+    private JPanel panel = new JPanel();
+    private JLabel statusLabel2;
+    private PrintJob p = null;
+    private Graphics g = null;
     private File currentFile;
     private boolean isNewFile;
 
     public Notepad() {
         JFrame();
-        panel.setLayout(new BorderLayout());// 设置BorderLayout，让JTextArea自动充满
+        panel.setLayout(new BorderLayout());
         JScrollPane jScrollPane = new JScrollPane(textArea);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panel.add(jScrollPane, BorderLayout.CENTER);
@@ -480,18 +484,18 @@ public class Notepad extends JFrame {
                 new Find().find();
             }
         });
-        jmt2_4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        jmt2_4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, CTRL_MASK));
     }
 
-    private void 清空(JMenuItem jmt2_7) {
+    private void 清空(JMenuItem jmt27) {
 
-        jmt2_7.addActionListener(new ActionListener() {
+        jmt27.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 textArea.setText("");
             }
         });
-        jmt2_7.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
+        jmt27.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
     }
 
     private void 全选(JMenuItem jmt2_5) {
@@ -531,7 +535,7 @@ public class Notepad extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TurnTo TurnTo = new TurnTo();
-                TurnTo.TurnTo();
+                TurnTo.turnTo();
             }
         });
         editGoTo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
