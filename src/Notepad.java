@@ -634,7 +634,7 @@ public class Notepad extends JFrame {
         jmt5_1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Help.Star();
+                Help.star();
             }
         });
         jmt5_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));

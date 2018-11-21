@@ -3,13 +3,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * @author Marblog
+ */
 public class Find {
 
-    Notepad notepad = new Notepad();
+    private Notepad notepad = new Notepad();
 
-    public void find() {
-        final JDialog findDialog = new JDialog(new JFrame(), "查找", false);  //false时允许其他窗口同时处于激活状态(即无模式)，就是其余的窗口是可以弹出的
-        Container con = findDialog.getContentPane();    //返回此对话框的contentPane对象
+    void find() {
+        final JDialog findDialog = new JDialog(new JFrame(), "查找", false);
+        Container con = findDialog.getContentPane();
         con.setLayout(new FlowLayout(FlowLayout.LEFT));
         JLabel findContentLabel = new JLabel("查找内容(N): ");
         final JTextField findText = new JTextField(15);
@@ -21,13 +24,6 @@ public class Find {
         downButton.setSelected(true);
         buttonGroup.add(upButton);
         buttonGroup.add(downButton);
-        /**
-         * ButtonGroup此类用于为一组按钮创建一个多斥（multiple-exclusion）作用域。
-         *使用相同的 ButtonGroup 对象创建一组按钮意味着“开启”其中一个按钮时，将关闭组中的其他所有按钮。
-         *JRadioButton此类实现一个单选按钮，此按钮项可被选择或取消选择，并可为用户显示其状态。
-         *与 ButtonGroup 对象配合使用可创建一组按钮，一次只能选择其中的一个按钮。
-         *（创建一个 ButtonGroup 对象并用其 add 方法将 JRadioButton 对象包含在此组中。）
-         * */
         JButton cancel = 取消(findDialog);
         //查找下一个
         查找下一个(findText, findNextButton, matchCheckBox, upButton, downButton);
@@ -39,13 +35,13 @@ public class Find {
     private void 查找下一个(final JTextField findText, JButton findNextButton, final JCheckBox matchCheckBox, final JRadioButton upButton, final JRadioButton downButton) {
         findNextButton.addActionListener(e -> {
             //区分大小写(C) 的JCheckBox是否被选中
-            int k = 0, m = 0;
+            int k = 0;
             final String str1, str2, str3, str4, strA, strB;
             str1 = notepad.textArea.getText();
             str2 = notepad.textArea.getText();
-            str3 = str1.toUpperCase();  //转换为大写
+            str3 = str1.toUpperCase();
             str4 = str2.toUpperCase();
-            if (matchCheckBox.isSelected()) {    //区分大小写
+            if (matchCheckBox.isSelected()) {
                 strA = str1;
                 strB = str2;
             } else {  //不区分大小写，全部转换为大写

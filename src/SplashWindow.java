@@ -6,6 +6,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
+/**
+ * @author Marblog
+ */
 public class SplashWindow extends JWindow {
     /**
      * 构造函数
@@ -36,6 +39,7 @@ public class SplashWindow extends JWindow {
                 screenSize.height / 2 - (labelSize.height / 2));
         // 增加一个鼠标事件处理器，如果用户用鼠标点击了欢迎屏幕，则关闭。
         addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 JOptionPane.showConfirmDialog(SplashWindow.this, "加载中,请稍等...", "Load...", JOptionPane.DEFAULT_OPTION);
                 setVisible(true);
@@ -43,29 +47,19 @@ public class SplashWindow extends JWindow {
         });
 
         final int pause = waitTime;
-        /**
-         * Swing线程在同一时刻仅能被一个线程所访问。一般来说，这个线程是事件派发线程（event-dispatching thread）。
-         * 如果需要从事件处理（event-handling）或绘制代码以外的地方访问UI，
-         * 那么可以使用SwingUtilities类的invokeLater()或invokeAndWait()方法。
-         */
         // 关闭欢迎屏幕的线程
-        final Runnable closerRunner = new Runnable() {
-            public void run() {
-                setVisible(false);
-                dispose();
-            }
+        final Runnable closerRunner = () -> {
+            setVisible(false);
+            dispose();
         };
         // 等待关闭欢迎屏幕的线程
-        Runnable waitRunner = new Runnable() {
-            public void run() {
-                try {
-                    // 当显示了waitTime后，尝试关闭欢迎屏幕
-                    Thread.sleep(pause);
-                    SwingUtilities.invokeAndWait(closerRunner);
-                    // SwingUtilities.invokeLater(closerRunner);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        Runnable waitRunner = () -> {
+            try {
+                // 当显示了waitTime后，尝试关闭欢迎屏幕
+                Thread.sleep(pause);
+                SwingUtilities.invokeAndWait(closerRunner);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         };
         setVisible(true);
@@ -74,12 +68,11 @@ public class SplashWindow extends JWindow {
         splashThread.start();
     }
 
-    public static void star() {
+    static void star() {
         JFrame frame = new JFrame("欢迎屏幕");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        SplashWindow splash = new SplashWindow("image/run.gif", frame,
+        new SplashWindow("image/run.gif", frame,
                 5000);
         frame.pack();
-        //frame.setVisible(true);
     }
 }

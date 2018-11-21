@@ -52,37 +52,21 @@ public class MyFont extends JDialog {
      */
     private static final String NUMBER_STRING = "0123456789";
     private Font font;
-    // 字体文本框
     private JTextField fontText = null;
-    // 样式文本框
     private JTextField styleText = null;
-    // 文字大小文本框
     private JTextField sizeText = null;
-    // 预览文本框
     private JTextField previewText = null;
-    // 中文预览
     private JRadioButton chinaButton = null;
-    // 英文预览
     private JRadioButton englishButton = null;
-    // 数字预览
     private JRadioButton numberButton = null;
-    // 字体选择框
     private JList<String> fontList = null;
-    // 样式选择器
     private JList<String> styleList = null;
-    // 文字大小选择器
     private JList<String> sizeList = null;
-    // 确定按钮
     private JButton approveButton = null;
-    // 取消按钮
     private JButton cancelButton = null;
-    // 所有样式
     private String [] styleArray = {"常规", "粗体", "斜体", "粗斜体"};
-    // 所有预设字体大小
     private String [] sizeArray = {"8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "初号", "小初", "一号", "小一", "二号", "小二", "三号", "小三", "四号", "小四", "五号", "小五", "六号", "小六", "七号", "八号"};
-    // 上面数组中对应的字体大小
     private int [] sizeIntArray = {8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 42, 36, 26, 24, 22, 18, 16, 15, 14, 12, 10, 9, 8, 7, 6, 5};
-    // 返回的数值，默认取消
     private int returnValue = CANCEL_OPTION;
     /**
      * 体构造一个字体选择器
@@ -97,28 +81,19 @@ public class MyFont extends JDialog {
     public MyFont(Font font) {
         setTitle("字体选择器");
         this.font = font;
-        // 初始化UI组件
         init();
-        // 添加监听器
         addListener();
-        // 按照预设字体显示
         setup();
-        // 基本设置
         setModal(true);
         setResizable(false);
-        // 自适应大小
         pack();
     }
     /**
      * 初始化组件
      */
     private void init(){
-        // 获得系统字体
         GraphicsEnvironment eq = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        // 所有字体
         String[] fontArray = eq.getAvailableFontFamilyNames();
-        // 主容器
-        // 字体选择器组件容器
         Box box = Box.createVerticalBox();
         box.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
         fontText = new JTextField();
@@ -139,7 +114,7 @@ public class MyFont extends JDialog {
                 if (getLength() >= 3) {
                     return;
                 }
-                if (!str.matches("[0-9]+") && !str.equals("初号") && !str.equals("小初") && !str.equals("一号") && !str.equals("小一") && !str.equals("二号") && !str.equals("小二") && !str.equals("三号") && !str.equals("小三") && !str.equals("四号") && !str.equals("小四") && !str.equals("五号") && !str.equals("小五") && !str.equals("六号") && !str.equals("小六") && !str.equals("七号") && !str.equals("八号")) {
+                if (!str.matches("[0-9]+") && !"初号".equals(str) && !"小初".equals(str) && !"一号".equals(str) && !"小一".equals(str) && !"二号".equals(str) && !"小二".equals(str) && !"三号".equals(str) && !"小三".equals(str) && !"四号".equals(str) && !"小四".equals(str) && !"五号".equals(str) && !"小五".equals(str) && !"六号".equals(str) && !"小六".equals(str) && !"七号".equals(str) && !"八号".equals(str)) {
                     return;
                 }
                 super.insertString(offs, str, a);
@@ -255,8 +230,8 @@ public class MyFont extends JDialog {
          * 如果预设的文字大小在选择列表中，则通过选择该列表中的某项进行设值，否则直接将预设文字大小写入文本框
          */
         boolean b = false;
-        for (int i = 0; i < sizeArray.length; i++) {
-            if (sizeArray[i].equals(String.valueOf(fontSize))) {
+        for (String aSizeArray : sizeArray) {
+            if (aSizeArray.equals(String.valueOf(fontSize))) {
                 b = true;
                 break;
             }

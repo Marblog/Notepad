@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * @author Marblog
+ */
 public class Replace {
     private Notepad notepad = new Notepad();
     void replace() {
@@ -93,7 +96,6 @@ public class Replace {
             str2 = str1.toLowerCase();
             str3 = findText.getText();
             str4 = str3.toLowerCase();
-            // "区分大小写"的CheckBox被选中
             if (matchcase.isSelected()) {
                 strA = str1;
                 strB = str3;
@@ -102,35 +104,45 @@ public class Replace {
                 strB = str4;
             }
 
-            if (up.isSelected()) {
-                if (notepad.textArea.getSelectedText() == null) {
-                    a = strA.lastIndexOf(strB, findStarTpos - 1);
-                } else {
-                    a = strA.lastIndexOf(strB, findStarTpos - findText.getText().length() - 1);
-                }
-            } else if (down.isSelected()) {
-                if (notepad.textArea.getSelectedText() == null) {
-                    a = strA.indexOf(strB, findStarTpos);
-                } else {
-                    a = strA.indexOf(strB, findStarTpos - findText.getText().length() + 1);
-                }
-
-            }
+            a = getA(findText, up, down, a, findStarTpos, strA, strB);
             if (a > -1) {
-                if (up.isSelected()) {
-                    notepad.textArea.setCaretPosition(a);
-                    b = findText.getText().length();
-                    notepad.textArea.select(a, a + b);
-                } else if (down.isSelected()) {
-                    notepad.textArea.setCaretPosition(a);
-                    b = findText.getText().length();
-                    notepad.textArea.select(a, a + b);
-                }
+                getB(findText, up, down, a);
             } else {
                 JOptionPane.showMessageDialog(null, "找不到您查找的内容!", "记事本", JOptionPane.INFORMATION_MESSAGE);
             }
 
         });/* "查找下一个"按钮事件处理结束 */
+    }
+
+    private void getB(JTextField findText, JRadioButton up, JRadioButton down, int a) {
+        int b;
+        if (up.isSelected()) {
+            notepad.textArea.setCaretPosition(a);
+            b = findText.getText().length();
+            notepad.textArea.select(a, a + b);
+        } else if (down.isSelected()) {
+            notepad.textArea.setCaretPosition(a);
+            b = findText.getText().length();
+            notepad.textArea.select(a, a + b);
+        }
+    }
+
+    private int getA(JTextField findText, JRadioButton up, JRadioButton down, int a, int findStarTpos, String strA, String strB) {
+        if (up.isSelected()) {
+            if (notepad.textArea.getSelectedText() == null) {
+                a = strA.lastIndexOf(strB, findStarTpos - 1);
+            } else {
+                a = strA.lastIndexOf(strB, findStarTpos - findText.getText().length() - 1);
+            }
+        } else if (down.isSelected()) {
+            if (notepad.textArea.getSelectedText() == null) {
+                a = strA.indexOf(strB, findStarTpos);
+            } else {
+                a = strA.indexOf(strB, findStarTpos - findText.getText().length() + 1);
+            }
+
+        }
+        return a;
     }
 
     private void 替换(final JTextField replaceText, JButton replace) {
@@ -172,31 +184,10 @@ public class Replace {
                     strB = str4;
                 }
 
-                if (up.isSelected()) {
-                    if (notepad.textArea.getSelectedText() == null) {
-                        a = strA.lastIndexOf(strB, fenestration - 1);
-                    } else {
-                        a = strA.lastIndexOf(strB, fenestration - findText.getText().length() - 1);
-                    }
-                } else if (down.isSelected()) {
-                    if (notepad.textArea.getSelectedText() == null) {
-                        a = strA.indexOf(strB, fenestration);
-                    } else {
-                        a = strA.indexOf(strB, fenestration - findText.getText().length() + 1);
-                    }
-
-                }
+                a = getA(findText, up, down, a, fenestration, strA, strB);
 
                 if (a > -1) {
-                    if (up.isSelected()) {
-                        notepad.textArea.setCaretPosition(a);
-                        b = findText.getText().length();
-                        notepad.textArea.select(a, a + b);
-                    } else if (down.isSelected()) {
-                        notepad.textArea.setCaretPosition(a);
-                        b = findText.getText().length();
-                        notepad.textArea.select(a, a + b);
-                    }
+                    getB(findText, up, down, a);
                 } else {
                     if (replaceCount == 0) {
                         JOptionPane.showMessageDialog(findDialog, "找不到您查找的内容!", "记事本", JOptionPane.INFORMATION_MESSAGE);

@@ -6,7 +6,6 @@ import javax.swing.*;
  */
 public class Main {
     public static void main(String[] args) {
-        SplashWindow splashWindow = new SplashWindow("Hello", new JFrame(), 5000);
         SplashWindow.star();
         try {
             Thread.sleep(5000);

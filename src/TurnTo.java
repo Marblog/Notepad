@@ -2,20 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * @author Administrator
+ * @author Marblog
  */
 public class TurnTo {
-    private Notepad notepad= new Notepad();
+    private Notepad notepad = new Notepad();
+
     void turnTo() {
         final JDialog gotoDialog = new JDialog(new JFrame(), "转到下列行");
         JLabel gotoLabel = new JLabel("行数(L):");
-        final JTextField lineNum = new JTextField(5);
-        lineNum.setText("1");
-        lineNum.selectAll();
-        JButton okButton = 确定(gotoDialog, lineNum);
+        final JTextField linenum = new JTextField(5);
+        linenum.setText("1");
+        linenum.selectAll();
+
+        JButton okButton = 确定(gotoDialog, linenum);
         JButton cancelButton = 取消(gotoDialog);
 
-        initContainer(gotoDialog, gotoLabel, lineNum, okButton, cancelButton);
+        initContainer(gotoDialog, gotoLabel, linenum, okButton, cancelButton);
     }
 
     private JButton 确定(final JDialog gotoDialog, final JTextField linenum) {
@@ -26,6 +28,7 @@ public class TurnTo {
             int[] lineNumber = new int[totalLine + 1];
             String s = notepad.textArea.getText();
             int pos = 0, t = 0;
+
             while (true) {
                 pos = s.indexOf('\12', pos);
                 if (pos == -1) {
